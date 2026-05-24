@@ -34,11 +34,11 @@
 | R7 | services.py 198→153L 拆分 | ✅ 2026-05-25 | OHLCV 抽到 ohlcv.py (65L) |
 | R16 | Context provider memoize | ✅ 2026-05-25 | 4 providers (Toast/Auth/Settings/Baskets) useMemo |
 | R2 | OpenAPI 對齊 — response_model | ✅ 2026-05-25 | 12 endpoints + rrg router tag |
-| R13 | 前端 hook/component 過細評估 — fan-in | M2 待做 | Codex audit 中 |
-| R14 | frontend components/ + hooks/ 按 feature 分子資料夾 | M2 待做 | R13 先 |
-| R5-full | Redis 完整遷移（response + OHLCV + data cache） | M2 待做 | 需 Redis infra |
+| R13 | 前端 hook/component fan-in audit | ✅ 2026-05-25 | 3 dead hooks + 6 dead components 候選，見 Engineering-13-Fan-In-Audit.md |
+| R14 | frontend components/ + hooks/ 按 feature 分子資料夾 | M2 待用戶 | 需用戶決定分組與 dead code 刪除 |
+| R5-full | Redis 完整遷移（response + OHLCV + data cache） | M2 待 infra | 需 Redis service + env var |
 
-**M2 已完成 8/11**：R1、R2、R7、R8、R15、R16、R17、R18。剩 3 項。
+**M2 已完成 9/11**：R1、R2、R7、R8、R13、R15、R16、R17、R18。剩 2 項待外部依賴。
 
 **建議執行順序**：
 ```
@@ -89,7 +89,8 @@ R5-full (Redis)
 ## 狀態追蹤
 
 - M1：✅ 全部完成（2026-05-25）
-- M2：8/11 完成（R1 / R2 / R7 / R8 / R15 / R16 / R17 / R18）— 2026-05-25
+- M2：9/11 完成（R1 / R2 / R7 / R8 / R13 / R15 / R16 / R17 / R18）— 2026-05-25
+  剩 R14 (需用戶分組決定) / R5-full (需 Redis infra)
 - M3：等待觸發
 
 Last updated: 2026-05-25
