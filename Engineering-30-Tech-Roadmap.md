@@ -24,20 +24,21 @@
 
 目標：MVP1 上線後，趁 codebase 還小時做架構清理。
 
-| R# | 內容 | 工時 | 依賴 | Codex 評估 |
-|---|---|---|---|---|
-| R15 | TanStack Query 引入 — 9 個手動 fetch hooks 遷移 | 2-4d | 無 | P1/P2，不是 stop-ship |
-| R1 | server/ 按 domain 分子資料夾 (auth/ basket/ tag/ note/ ...) | 1d | 無 | |
-| R7 | useRRGData (177L) + services.py (198L) 拆分 | 0.5-1d | R15 先做更好 | Codex 說 not P0 |
-| R14 | frontend components/ + hooks/ 按 feature 分子資料夾 | 1d | R13 先 | |
-| R16 | Context provider memoize + read/write 分離 | 0.5d | 無 | Codex 說 not P0 |
-| R18 | React Compiler trial — 裝 babel plugin + lint diagnostics | 0.5-1d | R17 先 | Codex 說不能替代 R17 |
-| R2 | OpenAPI 對齊 — response_model 補齊 + TS types auto-gen | 1-2d | R1 先 | |
-| R8 | Pydantic Settings 集中 globals | 0.5d | R1 先 | |
-| R5-full | Redis 完整遷移（response + OHLCV + data cache） | 1-2d | R5 quick fix 先 | |
-| R13 | 前端 hook/component 過細評估 — fan-in 分析 | 0.5d | 無 | |
+| R# | 內容 | 狀態 | 備註 |
+|---|---|---|---|
+| R15 | TanStack Query — 9 hooks 遷移 | ✅ 2026-05-25 | 全 9 hooks 完成，codex review 6 issues 修完 |
+| R1 | server/ flat → domain subdirs | ✅ 2026-05-25 | 29 files → 10 domain dirs，53/71 tests pass |
+| R17 | SymbolTable O(n²) → O(n) Map lookup | ✅ 2026-05-25 | 補上次 memo 沒做的 precompute |
+| R7 | useRRGData (177L) + services.py (198L) 拆分 | M2 待做 | Codex 說 not P0；R15 後自然簡化 |
+| R14 | frontend components/ + hooks/ 按 feature 分子資料夾 | M2 待做 | R13 先 |
+| R16 | Context provider memoize + read/write 分離 | M2 待做 | Codex 說 not P0 |
+| R18 | React Compiler trial — 裝 babel plugin + lint diagnostics | M2 待做 | Grok 確認 v1.0 stable since Oct 2025 |
+| R2 | OpenAPI 對齊 — response_model 補齊 + TS types auto-gen | M2 待做 | R1 完成後可做 |
+| R8 | Pydantic Settings 集中 globals | M2 待做 | R1 完成後可做 |
+| R5-full | Redis 完整遷移（response + OHLCV + data cache） | M2 待做 | R5 quick fix 已落地 |
+| R13 | 前端 hook/component 過細評估 — fan-in 分析 | M2 待做 | |
 
-**M2 預估**：10-15 天
+**M2 已完成 3/11**：R15、R1、R17（補完）。剩 8 項。
 
 **建議執行順序**：
 ```
@@ -88,7 +89,7 @@ R5-full (Redis)
 ## 狀態追蹤
 
 - M1：✅ 全部完成（2026-05-25）
-- M2：未開始
+- M2：3/11 完成（R15 / R1 / R17）— 2026-05-25
 - M3：等待觸發
 
 Last updated: 2026-05-25
