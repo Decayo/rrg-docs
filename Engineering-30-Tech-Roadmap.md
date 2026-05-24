@@ -27,18 +27,18 @@
 | R# | 內容 | 狀態 | 備註 |
 |---|---|---|---|
 | R15 | TanStack Query — 9 hooks 遷移 | ✅ 2026-05-25 | 全 9 hooks 完成，codex review 6 issues 修完 |
-| R1 | server/ flat → domain subdirs | ✅ 2026-05-25 | 29 files → 10 domain dirs，53/71 tests pass |
+| R1 | server/ flat → domain subdirs | ✅ 2026-05-25 | 29 files → 10 domain dirs |
 | R17 | SymbolTable O(n²) → O(n) Map lookup | ✅ 2026-05-25 | 補上次 memo 沒做的 precompute |
-| R7 | useRRGData (177L) + services.py (198L) 拆分 | M2 待做 | Codex 說 not P0；R15 後自然簡化 |
+| R18 | React Compiler v1.0 trial | ✅ 2026-05-25 | target:"19" config，Grok 確認 stable |
+| R8 | Pydantic Settings 集中 globals | ✅ 2026-05-25 | 5 env globals 集中到 core/settings.py |
+| R7 | services.py 198→153L 拆分 | ✅ 2026-05-25 | OHLCV 抽到 ohlcv.py (65L) |
+| R16 | Context provider memoize | ✅ 2026-05-25 | 4 providers (Toast/Auth/Settings/Baskets) useMemo |
+| R2 | OpenAPI 對齊 — response_model | ✅ 2026-05-25 | 12 endpoints + rrg router tag |
+| R13 | 前端 hook/component 過細評估 — fan-in | M2 待做 | Codex audit 中 |
 | R14 | frontend components/ + hooks/ 按 feature 分子資料夾 | M2 待做 | R13 先 |
-| R16 | Context provider memoize + read/write 分離 | M2 待做 | Codex 說 not P0 |
-| R18 | React Compiler trial — 裝 babel plugin + lint diagnostics | M2 待做 | Grok 確認 v1.0 stable since Oct 2025 |
-| R2 | OpenAPI 對齊 — response_model 補齊 + TS types auto-gen | M2 待做 | R1 完成後可做 |
-| R8 | Pydantic Settings 集中 globals | M2 待做 | R1 完成後可做 |
-| R5-full | Redis 完整遷移（response + OHLCV + data cache） | M2 待做 | R5 quick fix 已落地 |
-| R13 | 前端 hook/component 過細評估 — fan-in 分析 | M2 待做 | |
+| R5-full | Redis 完整遷移（response + OHLCV + data cache） | M2 待做 | 需 Redis infra |
 
-**M2 已完成 3/11**：R15、R1、R17（補完）。剩 8 項。
+**M2 已完成 8/11**：R1、R2、R7、R8、R15、R16、R17、R18。剩 3 項。
 
 **建議執行順序**：
 ```
@@ -89,7 +89,7 @@ R5-full (Redis)
 ## 狀態追蹤
 
 - M1：✅ 全部完成（2026-05-25）
-- M2：3/11 完成（R15 / R1 / R17）— 2026-05-25
+- M2：8/11 完成（R1 / R2 / R7 / R8 / R15 / R16 / R17 / R18）— 2026-05-25
 - M3：等待觸發
 
 Last updated: 2026-05-25
