@@ -3,30 +3,20 @@
 > Session 6 產出（2026-05-25）。根據 39 條 R-backlog + Codex GPT-5.5 second opinion 排序。
 > Codex review 對 Grok 原始 P0 升級做了降級（讀完實際 code 後）。
 
-## M1 — Pre-MVP1 Stop Ship
+## M1 — Pre-MVP1 Stop Ship ✅ COMPLETE
 
-目標：5 人 beta 測試前必須完成。
+目標：5 人 beta 測試前必須完成。**全部完成（2026-05-25）。**
 
-### ✅ Done（本 session 已完成）
-
-| R# | 內容 | 備註 |
-|---|---|---|
-| R11+R37 | authHeaders DRY — 5 client 統一 import `client.ts` | 移除 5 份重複 |
-| R12 | 200-line hook strict→warning | 不再擋開發 |
-| R20 | BASE URL default 8000→8666 + 統一 BASE export | note-client 8666 ↔ 其他 8000 不一致已修 |
-
-### TODO（需用戶決策的標 ⚠️）
-
-| R# | 內容 | 工時 | 備註 |
+| R# | 內容 | 狀態 | 備註 |
 |---|---|---|---|
-| R5 | Cache quick fix: `_mem_cache` 加 LRU 上限 + parquet atomic write | 0.5d | Codex 說 single-worker 下 P1，multi-worker 才 P0 ⚠️ |
-| R17 | SymbolTable `React.memo` + `useCallback(toggleSymbol)` + precompute row map | 0.5-1d | Codex 降為 P1，但 FPS 67→10 是用戶痛感 |
-| R22 | Dev token 安全 — 部署 checklist 明確寫 `RRG_DEV_AUTH` must unset | 5min | |
-| R24 | Login rate limit — `slowapi` 5 attempts/min/IP | 0.5d | Production 前必加 |
-| R9 | seed_tags 改 idempotent auto-seed in `init_db()` | 0.5d | 新環境不用手動跑 |
-| R6 | IBKR 架構約束文件化 | 5min | 寫到 rrg-docs |
-
-**M1 預估**：3-4 天（不含 ✅ 已完成項）
+| R11+R37 | authHeaders DRY — 5 client 統一 import `client.ts` | ✅ | 移除 5 份重複 |
+| R12 | 200-line hook strict→warning | ✅ | 不再擋開發 |
+| R20 | BASE URL default 8000→8666 + 統一 BASE export | ✅ | 6 client 統一 |
+| R5 | Cache: `_mem_cache` LRU 200 上限 + parquet atomic write | ✅ | quick fix; Redis 完整遷移在 M2 |
+| R17 | SymbolTable `React.memo` + `useCallback(toggleSymbol)` | ✅ | ThTip/TvButton/SymbolTable 都加 memo |
+| R22+R6 | Deploy checklist + IBKR 架構約束 | ✅ | Engineering-Deploy-Checklist.md |
+| R24 | Login rate limit — slowapi 5/min login, 3/min register | ✅ | 暴力破解防護 |
+| R9 | seed_tags auto-seed in `init_db()` | ✅ | 新環境自動 seed |
 
 ---
 
@@ -97,6 +87,8 @@ R5-full (Redis)
 
 ## 狀態追蹤
 
-完成項目標 ✅ + 日期。進行中標 🔄。
+- M1：✅ 全部完成（2026-05-25）
+- M2：未開始
+- M3：等待觸發
 
 Last updated: 2026-05-25
