@@ -90,10 +90,11 @@ R5-full (Redis)
 
 ## 狀態追蹤
 
-- M1：✅ 全部完成（2026-05-25）
-- M2：10/12 完成（R1 / R2 / R7 / R8 / R13 / R15 / R16 / R17 / R18 / **R40**）— 2026-05-25
+- M1：✅ 全部完成（2026-05-25）+ **R42 Alembic** (M1 final, P0 production blocker) ✅
+- M2：14/16 完成（R1/R2/R7/R8/R13/R15/R16/R17/R18/R40/**R43**/**R44**/**R45**/**R46**）— 2026-05-25
   剩 R14 (需用戶分組決定) / R5-full (需 Redis infra)
-- M3：R41 (auth middleware) 待 production 前審查
-- M3：等待觸發
+- M3：✅ **R41** (auth middleware, security fix) done
+- Hygiene done：R29 / R47 / **R4 (legacy Plotly -524L)**
+- M3 等待觸發：R3 / R19 / R21 / R23 / R25 / R31 / R33 / R34(subsumed by R43) / R35 / R36 / R38
 
 Last updated: 2026-05-25
