@@ -10,6 +10,75 @@
 
 ---
 
+## Status Quick Reference (2026-05-26)
+
+### ✅ Done (33)
+
+| R# | 內容 | Done in |
+|---|---|---|
+| R1 | server/ flat → domain subdirs | PR #4 |
+| R2 | OpenAPI response_model + tags | PR #4 |
+| R4 | Legacy Plotly CLI removed (-524L) | PR #7 |
+| R5 (quick) | _mem_cache LRU + parquet atomic write | PR #4 (M1) |
+| R6 | IBKR architecture doc | Deploy checklist |
+| R7 | services.py 198→153L (OHLCV extracted) | PR #4 |
+| R8 | Pydantic Settings centralized | PR #4 |
+| R9 | seed_tags auto-seed in init_db | PR #4 |
+| R10 | TODO/FIXME audit + db.py compromise note | PR #6 |
+| R11 + R37 | authHeaders DRY across 5 clients | PR #4 |
+| R12 | 200-line hook strict→warning | PR #4 |
+| R13 | Fan-in audit + 10 dead files removed | PR #5 |
+| R15 | TanStack Query — 9 hooks migrated | PR #4 |
+| R16 | Context provider useMemo (4 providers) | PR #4 |
+| R17 | SymbolTable React.memo + O(n²)→O(n) Map | PR #4 |
+| R18 | React Compiler v1.0 enabled | PR #4 |
+| R20 | BASE URL default 8000→8666 unified | PR #4 |
+| R22 | Dev token security deploy checklist | rrg-docs |
+| R24 | Login rate limit (slowapi 5/min) | PR #4 |
+| R26 | useRRGData L171 exhaustive-deps disable | Dead after R15 |
+| R27 | prewarm logic hidden | Inline useEffect now (R15) |
+| R28 | module _cache HMR | Dead (TanStack handles) |
+| R29 | Ternary side-effect anti-pattern | PR #6 |
+| R32 | states empty fragile judgment | Fixed in R15 + codex review |
+| R39 | BasketChooser dedup + Popover removed | PR #6 |
+| R40 | Frontend Settings/Config (lib/config.ts) | PR #4 |
+| R41 | Auth middleware security fix | PR #7 |
+| R42 | Alembic migration framework + baseline | PR #7 (M1 final P0) |
+| R43 | BaseModal + BaseDrawer extraction (4 modals) | PR #7 |
+| R44 | 8 dead shadcn primitives removed | PR #7 |
+| R45 | lazy_load_json utility | PR #7 |
+| R46 | LoadingPulse + EmptyState components | PR #7 |
+| R47 | Backend CRUD naming consistency | PR #7 |
+
+### 🚧 Open (3 — real work remaining)
+
+| R# | 內容 | 工時 | Blocked by |
+|---|---|---|---|
+| R5-full | Redis multi-worker cache migration | 1-2d | Redis service infra + env vars |
+| R14 | Frontend components/+hooks/ feature subdirs | 1d | Needs user grouping decision |
+| R34 | BasketDrawer createPortal docs | — | **Subsumed by R43** (BaseDrawer used) |
+
+### 🟡 Open Defer (10 — P2/P3 etc踩到再做)
+
+| R# | 內容 | Tier |
+|---|---|---|
+| R3 | Frontend/backend repo split | P3 (never until trigger) |
+| R19 | Chrome GPU acceleration doc | P2 |
+| R21 | google-auth library replace urllib | P2 |
+| R23 | JWT refresh token | P2 |
+| R25 | bcrypt cost factor 14+ | P2 |
+| R30 | useFilterTags ref.current = props | code 仍在但 root cause 解決 |
+| R31 | localStorage key normalize | P3 |
+| R33 | filteredOut O(n×m) perf | P3 (1000+ symbol scale) |
+| R35 | Confirm-Discard hardcoded dialog | P2 |
+| R36 | 4 overlay modal stack mutex | P2 |
+| R38 | Confirm-Discard always trigger | P3 |
+
+**Stats**: 33 done / 14 open (3 real + 11 defer) / **47 total**.
+**Completion rate**: 70%.
+
+---
+
 ## R1 — server/ 結構扁平化
 
 **問題**
