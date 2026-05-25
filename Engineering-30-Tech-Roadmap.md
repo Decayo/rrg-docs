@@ -35,10 +35,12 @@
 | R16 | Context provider memoize | ✅ 2026-05-25 | 4 providers (Toast/Auth/Settings/Baskets) useMemo |
 | R2 | OpenAPI 對齊 — response_model | ✅ 2026-05-25 | 12 endpoints + rrg router tag |
 | R13 | 前端 hook/component fan-in audit | ✅ 2026-05-25 | 3 dead hooks + 6 dead components 候選，見 Engineering-13-Fan-In-Audit.md |
+| **R40** | Frontend Settings/Config 集中化 | ✅ 2026-05-25 | 從 PR #4 review 浮現，建 lib/config.ts |
 | R14 | frontend components/ + hooks/ 按 feature 分子資料夾 | M2 待用戶 | 需用戶決定分組與 dead code 刪除 |
 | R5-full | Redis 完整遷移（response + OHLCV + data cache） | M2 待 infra | 需 Redis service + env var |
+| **R41** | Auth middleware 重整 | M3 待上線前 | 從 PR #4 review 浮現，P1 |
 
-**M2 已完成 9/11**：R1、R2、R7、R8、R13、R15、R16、R17、R18。剩 2 項待外部依賴。
+**M2 已完成 10/12**（含新增 R40）：R1、R2、R7、R8、R13、R15、R16、R17、R18、R40。剩 2 項待外部依賴。
 
 **建議執行順序**：
 ```
@@ -89,8 +91,9 @@ R5-full (Redis)
 ## 狀態追蹤
 
 - M1：✅ 全部完成（2026-05-25）
-- M2：9/11 完成（R1 / R2 / R7 / R8 / R13 / R15 / R16 / R17 / R18）— 2026-05-25
+- M2：10/12 完成（R1 / R2 / R7 / R8 / R13 / R15 / R16 / R17 / R18 / **R40**）— 2026-05-25
   剩 R14 (需用戶分組決定) / R5-full (需 Redis infra)
+- M3：R41 (auth middleware) 待 production 前審查
 - M3：等待觸發
 
 Last updated: 2026-05-25
