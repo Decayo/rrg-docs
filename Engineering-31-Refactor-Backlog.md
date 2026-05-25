@@ -970,6 +970,52 @@ TS 反 pattern（ternary 應該回值，不該有 side-effect）。
 
 ---
 
+## R42 — Alembic migration framework + DDL 拆分（P0 production blocker）
+
+**問題**：[server/core/db.py](../../server/core/db.py) 199 行塞了：
+- connection pool (25 行)
+- `_SCHEMA` 120 行 inline SQL（所有 CREATE TABLE 字串）
+- `_MIGRATIONS` 11 行 ALTER 字串
+- `init_db()` 直接跑這兩個字串 + 呼叫 seed
+
+**完全沒有**：
+1. **Alembic** — Python migration 標準，自動 version tracking + 可逆 up/down
+2. **`server/schema/*.sql`** — DDL 拆獨立檔，psql 直拉、syntax highlight、git diff 清楚
+3. **Migration version table** — 沒紀錄哪個 migration 跑過
+
+**為什麼是 production blocker**：
+
+| 場景 | 現況 | 該有的 |
+|---|---|---|
+| 加 column | ALTER...IF NOT EXISTS 字串塞 `_MIGRATIONS` | `alembic revision -m "add X column"` 產 .py |
+| Drop column | **❌ 無法**（resa string 不會跑 destructive ALTER） | up/down migration 可控 |
+| Backfill 資料 | **❌ 只能寫 raw SQL**，不能寫 Python | data migration 用 Python operator |
+| Staging vs prod 分階段 | **❌ 兩邊都 init_db() 全跑** | alembic upgrade 跑到指定 version |
+| Rollback 上一版 | **❌ 沒紀錄哪個 migration 跑過** | `alembic downgrade -1` |
+| 兩個 PR 同改 schema | **❌ merge conflict 拚 SQL 字串** | 每個 PR 自己 revision，按時序套用 |
+| Production schema review | **❌ 大字串無法 diff** | `versions/*.py` 每個 migration 獨立 review |
+
+**為什麼現在不痛 但上線必痛**：
+- pre-MVP1 單人開發 + 沒用戶資料 → 改字串重跑無所謂
+- 5 人 beta 後第一次要 drop column / migrate data → **立刻炸**
+
+**Scope**：
+- `pip install alembic`
+- `alembic init server/migrations`
+- 把 `_SCHEMA` 拆成多個 baseline migration（一個 table 一個檔）
+- 把 `_MIGRATIONS` 內 ALTER 轉 alembic revision
+- `init_db()` 改成 `alembic upgrade head`
+- Makefile + CLAUDE.md 加 `make migrate` / `make migration-new "msg"`
+
+**前置依賴**：
+- 配合 R8 (Pydantic Settings) 提供 `database_url`
+- 配合 R9 (seed_tags) — seed 改成 data migration
+
+**Tier**：**P0 production blocker**
+**Timing**：M1 final（5 人 beta 之前必修）
+
+---
+
 ## 議題升級備註（2026-05-23 Grok 加持）
 
 Grok outside view 給的優先順序調整：
