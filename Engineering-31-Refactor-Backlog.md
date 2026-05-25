@@ -909,6 +909,67 @@ TS 反 pattern（ternary 應該回值，不該有 side-effect）。
 
 ---
 
+## R40 — Frontend Settings / Config 集中化（對等後端 R8）
+
+**問題**：後端 R8 把 env globals 集中到 `server/core/settings.py`（Pydantic Settings），但前端對應沒做。staleTime / gcTime / DEBOUNCE_MS / POOL_SIZE 等魔法數字散落在 9 個 hook：
+
+- `useNotes` staleTime 30s, gcTime 10min
+- `useColorTags` staleTime 1h, gcTime 24h
+- `useAuth` staleTime 5min, gcTime Infinity
+- `useSettings` staleTime 5min, gcTime 24h
+- `useBaskets` staleTime 60s, gcTime 30min
+- `useSymbolData` staleTime 5min, gcTime 30min, DEBOUNCE_MS 500
+- `useFilterTags` staleTime 1h, gcTime 24h, DEBOUNCE_MS 600
+- `useRRGData` staleTime 5/15min, gcTime 30/60min, DEFAULT_TRAIL 252, POOL_SIZE 3
+- `useSymbolNames` staleTime 24h, gcTime 24h
+
+**Why**：
+- 改 cache 政策要 grep 9 個檔
+- 用戶 PR review 直接點名：「為啥 jwt.py 有 settings 前端就沒」
+- 加新 hook 時人為決定 staleTime 容易不一致
+
+**解法方向**：
+1. 建 `frontend/src/lib/config.ts`：
+   ```ts
+   export const QUERY_CONFIG = {
+     auth: { staleTime: 5 * 60_000, gcTime: Infinity },
+     settings: { staleTime: 5 * 60_000, gcTime: 24 * 60 * 60_000 },
+     baskets: { staleTime: 60_000, gcTime: 30 * 60_000 },
+     // ...
+   };
+   ```
+2. QueryClient defaultOptions 設大部分基準值，hook 只 override 特例
+3. 順便重命名 `setLocal` → `updateBasketCache`（命名歧義）
+
+**Tier**：P2
+**Timing**：M2（趁 R15 剛做完，眾人記得 hook 結構）
+
+---
+
+## R41 — Auth middleware 重整（上線前 P1）
+
+**問題**：[server/core/app.py:82-97](../../server/core/app.py#L82-L97) API key middleware 多個問題：
+
+1. **Prefix hardcode**：skip list `("/api/auth", "/api/settings")` 散落，未來新 endpoint 容易漏 skip → 加 endpoint 後 X-API-Key 缺失就 401
+2. **JWT 判斷太鬆**：`auth.startswith("Bearer ") and len(auth) > 20` 只看長度，不驗 signature
+3. **雙軌認證 hole**：X-API-Key 跟 JWT 任一通過就 OK → 內部洩漏 API key 就跳過所有 user-level auth
+
+**Why MVP1 前必修**：
+- production 上線後 user 改密碼 / kick session 等流程依賴正確 JWT 驗證
+- 內部誤洩 RRG_API_KEY 等於整個 user-tier auth 失效
+
+**修法方向**：
+1. **白名單 endpoint 改用 dependency**：FastAPI 的 `Depends(get_current_user)` 已經做了，middleware 不該重複處理
+2. **API key 改成 admin-only 路由**：劃清楚哪些 endpoint 走 API key（如 internal metrics），其餘走 JWT
+3. **JWT 真實驗證**：呼叫 `jwt.decode_token()` 確認 signature + expiry，不要只看字串長度
+
+**Tier**：P1（production 前必修）
+**Timing**：M3（MVP1 上線前最後一輪 security audit）
+
+**前置依賴**：無
+
+---
+
 ## 議題升級備註（2026-05-23 Grok 加持）
 
 Grok outside view 給的優先順序調整：
